@@ -24,9 +24,6 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -61,7 +58,6 @@ import snownee.snow.client.FallingSnowRenderer;
 import snownee.snow.client.SnowRenderer;
 import snownee.snow.entity.FallingSnowEntity;
 import snownee.snow.item.SnowBlockItem;
-import snownee.snow.world.gen.feature.ModIceAndSnowFeature;
 
 @KiwiModule(modid = SnowRealMagic.MODID)
 @KiwiModule.Subscriber(Bus.MOD)
@@ -90,9 +86,6 @@ public class MainModule extends AbstractModule {
     public static TileEntityType<SnowTextureTile> TEXTURE_TILE;
     @Name("snow")
     public static EntityType<FallingSnowEntity> ENTITY;
-    @Name("minecraft:freeze_top_layer")
-    public static ModIceAndSnowFeature FEATURE;
-    public static ConfiguredFeature<?, ?> CONFIGURED_FEATURE;
 
     static {
 
@@ -135,9 +128,6 @@ public class MainModule extends AbstractModule {
 
             ENTITY = EntityType.Builder.<FallingSnowEntity>create(EntityClassification.MISC).setCustomClientFactory((spawnEntity, world) -> new FallingSnowEntity(world)).size(0.98F, 0.001F).build(SnowRealMagic.MODID + ".snow");
 
-            FEATURE = new ModIceAndSnowFeature(NoFeatureConfig.field_236558_a_);
-
-            CONFIGURED_FEATURE = FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
         } catch (Exception e) {
             System.out.println(e);
             SnowRealMagic.logger.catching(e);
