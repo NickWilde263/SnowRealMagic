@@ -67,58 +67,87 @@ import snownee.snow.world.gen.feature.ModIceAndSnowFeature;
 @KiwiModule.Subscriber(Bus.MOD)
 @KiwiModule.Group
 public class MainModule extends AbstractModule {
-    public static final ItemGroup GROUP = new ItemGroup(SnowRealMagic.MODID) {
-        @Override
-        @OnlyIn(Dist.CLIENT)
-        public ItemStack createIcon() {
-            return new ItemStack(Items.SNOWBALL);
-        }
-    };
-
-    public static final INamedTag<Block> BOTTOM_SNOW = blockTag(SnowRealMagic.MODID, "bottom_snow");
-
-    public static final INamedTag<Block> INVALID_SUPPORTERS = blockTag(SnowRealMagic.MODID, "invalid_supporters");
-
-    public static final INamedTag<Block> CONTAINABLES = blockTag(SnowRealMagic.MODID, "containables");
-
+    public static ItemGroup GROUP;
+    public static INamedTag<Block> BOTTOM_SNOW;
+    public static INamedTag<Block> INVALID_SUPPORTERS;
+    public static INamedTag<Block> CONTAINABLES;
     @NoItem
     @Name("minecraft:snow")
-    public static final ModSnowBlock BLOCK = new ModSnowBlock(blockProp(Blocks.SNOW));
-
+    public static ModSnowBlock BLOCK;
     @NoItem
     @Name("snow")
-    public static final ModSnowTileBlock TILE_BLOCK = new ModSnowTileBlock(blockProp(BLOCK));
-
+    public static ModSnowTileBlock TILE_BLOCK;
     @Name("minecraft:snow")
-    public static final SnowBlockItem ITEM = new SnowBlockItem(BLOCK);
-
-    public static final SnowFenceBlock FENCE = new SnowFenceBlock(blockProp(Blocks.OAK_FENCE).tickRandomly());
-
-    public static final SnowFenceBlock FENCE2 = new SnowFenceBlock(blockProp(Blocks.NETHER_BRICK_FENCE).tickRandomly());
-
-    public static final SnowStairsBlock STAIRS = new SnowStairsBlock(blockProp(Blocks.OAK_STAIRS).tickRandomly());
-
-    public static final SnowSlabBlock SLAB = new SnowSlabBlock(blockProp(Blocks.OAK_SLAB).tickRandomly());
-
-    public static final SnowFenceGateBlock FENCE_GATE = new SnowFenceGateBlock(blockProp(Blocks.OAK_FENCE_GATE).tickRandomly());
-
-    public static final SnowWallBlock WALL = new SnowWallBlock(blockProp(Blocks.COBBLESTONE_WALL).tickRandomly());
-
+    public static SnowBlockItem ITEM;
+    public static SnowFenceBlock FENCE;
+    public static SnowFenceBlock FENCE2;
+    public static SnowStairsBlock STAIRS;
+    public static SnowSlabBlock SLAB;
+    public static SnowFenceGateBlock FENCE_GATE;
+    public static SnowWallBlock WALL;
     @Name("snow")
-    public static final TileEntityType<SnowTile> TILE = TileEntityType.Builder.create(() -> new SnowTile(), TILE_BLOCK).build(null);
-
-    public static final TileEntityType<SnowTextureTile> TEXTURE_TILE = TileEntityType.Builder.create(() -> new SnowTextureTile(), FENCE, FENCE2, STAIRS, SLAB, FENCE_GATE, WALL).build(null);
-
+    public static TileEntityType<SnowTile> TILE;
+    public static TileEntityType<SnowTextureTile> TEXTURE_TILE;
     @Name("snow")
-    public static final EntityType<FallingSnowEntity> ENTITY = EntityType.Builder.<FallingSnowEntity>create(EntityClassification.MISC).setCustomClientFactory((spawnEntity, world) -> new FallingSnowEntity(world)).size(0.98F, 0.001F).build(SnowRealMagic.MODID + ".snow");
-
+    public static EntityType<FallingSnowEntity> ENTITY;
     @Name("minecraft:freeze_top_layer")
-    public static final ModIceAndSnowFeature FEATURE = new ModIceAndSnowFeature(NoFeatureConfig.field_236558_a_);
+    public static ModIceAndSnowFeature FEATURE;
+    public static ConfiguredFeature<?, ?> CONFIGURED_FEATURE;
 
-    public static final ConfiguredFeature<?, ?> CONFIGURED_FEATURE = FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+    static {
+
+        try {
+            GROUP = new ItemGroup(SnowRealMagic.MODID) {
+                @Override
+                @OnlyIn(Dist.CLIENT)
+                public ItemStack createIcon() {
+                    return new ItemStack(Items.SNOWBALL);
+                }
+            };
+
+            BOTTOM_SNOW = blockTag(SnowRealMagic.MODID, "bottom_snow");
+
+            INVALID_SUPPORTERS = blockTag(SnowRealMagic.MODID, "invalid_supporters");
+
+            CONTAINABLES = blockTag(SnowRealMagic.MODID, "containables");
+
+            BLOCK = new ModSnowBlock(blockProp(Blocks.SNOW));
+
+            TILE_BLOCK = new ModSnowTileBlock(blockProp(BLOCK));
+
+            ITEM = new SnowBlockItem(BLOCK);
+
+            FENCE = new SnowFenceBlock(blockProp(Blocks.OAK_FENCE).tickRandomly());
+
+            FENCE2 = new SnowFenceBlock(blockProp(Blocks.NETHER_BRICK_FENCE).tickRandomly());
+
+            STAIRS = new SnowStairsBlock(blockProp(Blocks.OAK_STAIRS).tickRandomly());
+
+            SLAB = new SnowSlabBlock(blockProp(Blocks.OAK_SLAB).tickRandomly());
+
+            FENCE_GATE = new SnowFenceGateBlock(blockProp(Blocks.OAK_FENCE_GATE).tickRandomly());
+
+            WALL = new SnowWallBlock(blockProp(Blocks.COBBLESTONE_WALL).tickRandomly());
+
+            TILE = TileEntityType.Builder.create(() -> new SnowTile(), TILE_BLOCK).build(null);
+
+            TEXTURE_TILE = TileEntityType.Builder.create(() -> new SnowTextureTile(), FENCE, FENCE2, STAIRS, SLAB, FENCE_GATE, WALL).build(null);
+
+            ENTITY = EntityType.Builder.<FallingSnowEntity>create(EntityClassification.MISC).setCustomClientFactory((spawnEntity, world) -> new FallingSnowEntity(world)).size(0.98F, 0.001F).build(SnowRealMagic.MODID + ".snow");
+
+            FEATURE = new ModIceAndSnowFeature(NoFeatureConfig.field_236558_a_);
+
+            CONFIGURED_FEATURE = FEATURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+        } catch (Exception e) {
+            System.out.println(e);
+            SnowRealMagic.logger.catching(e);
+        }
+
+    }
 
     public MainModule() {
         if (!SnowRealMagic.mixin) {
+            System.out.println("111111");
             throw new IllegalAccessError("Requires MixinBootstrap.");
         }
     }
